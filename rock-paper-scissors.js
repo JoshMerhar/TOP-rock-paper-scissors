@@ -1,3 +1,24 @@
+const container = document.querySelector("#container");
+
+let playerScore = 0;
+let computerScore = 0;
+
+const content = document.createElement("div");
+content.classList.add("content");
+content.textContent = "Who will win?";
+container.appendChild(content);
+
+const humanScore = document.createElement("div");
+humanScore.classList.add("score");
+humanScore.textContent = "Player: " + 0;
+container.appendChild(humanScore);
+
+const machineScore = document.createElement("div");
+machineScore.classList.add("score");
+machineScore.textContent = "Computer: " + 0;
+container.appendChild(machineScore);
+
+
 const choices = ["rock", "paper", "scissors"];
 
 function getComputerChoice() {
@@ -5,51 +26,51 @@ function getComputerChoice() {
     return selection;
 }
 
-let playerSelection;
-let computerSelection;
-let result;
+const buttons = document.querySelectorAll("button");
+buttons.forEach(button => button.addEventListener("click", playRound));
+buttons.forEach(button => button.addEventListener("click", showWinner));
 
-function playRound(computerSelection, playerSelection) {
-    while (playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissors") {
-        playerSelection = prompt("Choose your fighter: ").toLowerCase();
-    }
-    computerSelection = getComputerChoice(choices);
-    if (computerSelection === playerSelection) {
-        console.log("It's a draw!");
-        return result = "It's a draw!";
+let scoreCap = 5;
+let winner;
+
+function playRound() {
+    const playerSelection = this.id;
+    const computerSelection = getComputerChoice(choices);
+    if (playerScore === scoreCap || computerScore === scoreCap) {
+        return;
+    } else if (computerSelection === playerSelection) {
+        content.textContent = "It's a draw!";
+        return;
     } else if ((computerSelection === "rock" && playerSelection != "paper") 
         || (computerSelection === "paper" && playerSelection != "scissors") 
         || (computerSelection === "scissors" && playerSelection != "rock")) {
-        console.log("The computer wins! " + computerSelection[0].toUpperCase() + computerSelection.slice(1) + " beats " + playerSelection + ".");
-        return result = "The computer wins!";
+        content.textContent = "The computer wins! " + computerSelection[0].toUpperCase() + computerSelection.slice(1) + " beats " + playerSelection + ".";
+        computerScore++;
+        machineScore.textContent = "Computer: " + computerScore;
+        return;
     } else {
-        console.log("You win! " + playerSelection[0].toUpperCase() + playerSelection.slice(1) + " beats " + computerSelection + ".");
-        return result = "You win!";
+        content.textContent = "You win! " + playerSelection[0].toUpperCase() + playerSelection.slice(1) + " beats " + computerSelection + ".";
+        playerScore++;
+        humanScore.textContent = "Player: " + playerScore;
+        return;
     }
 }
 
-function game() {
-    let scoreCap = 5;
-    let playerScore = 0;
-    let computerScore = 0;
-
-    while (playerScore < scoreCap && computerScore < scoreCap) {
-        result = playRound(computerSelection, playerSelection);
-        if (result === "The computer wins!") {
-            computerScore++;
-        } else if (result === "You win!") {
-            playerScore++;
-        } else {
-            continue;
-        }
+function showWinner() {
+    if (winner === "You beat the machine!" || winner === "The computer wins!") {
+        return;
+    } else if (playerScore === scoreCap) {
+        winner = "You beat the machine!";
+    } else if (computerScore === scoreCap) {
+        winner = "The computer wins!";
+    } else {
+        return;
     }
-    if (playerScore > computerScore) {
-        console.log("You beat the machine!");
-    } else if (playerScore < computerScore) {
-        console.log("The computer wins!");
-    }
-    console.log("Your score: " + playerScore);
-    console.log("Computer's score: " + computerScore);
+    const theWinner = document.createElement("div");
+    theWinner.classList.add("winner-message");
+    theWinner.textContent = winner;
+    container.appendChild(theWinner);
 }
 
-console.log(game());
+
+
