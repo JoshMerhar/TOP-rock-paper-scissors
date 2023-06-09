@@ -1,4 +1,6 @@
 const container = document.querySelector("#container");
+const scoreBox = document.querySelector("#score-box");
+const scoreContainer = document.querySelector("#scores");
 
 const content = document.createElement("div");
 content.classList.add("content");
@@ -8,12 +10,14 @@ container.appendChild(content);
 const humanScore = document.createElement("div");
 humanScore.classList.add("score");
 humanScore.textContent = "Player: " + 0;
-container.appendChild(humanScore);
+scoreContainer.appendChild(humanScore);
 
 const machineScore = document.createElement("div");
 machineScore.classList.add("score");
 machineScore.textContent = "Computer: " + 0;
-container.appendChild(machineScore);
+scoreContainer.appendChild(machineScore);
+
+scoreBox.appendChild(scoreContainer);
 
 const choices = ["rock", "paper", "scissors"];
 
@@ -25,6 +29,13 @@ function getComputerChoice() {
 const buttons = document.querySelectorAll("button");
 buttons.forEach(button => button.addEventListener("click", playRound));
 buttons.forEach(button => button.addEventListener("click", showWinner));
+
+buttons.forEach(button => button.addEventListener("mouseenter", () => {
+    button.style.backgroundColor = "green";
+}));
+buttons.forEach(button => button.addEventListener("mouseleave", () => {
+    button.style.backgroundColor = "";
+}));
 
 let scoreCap = 5;
 let playerScore = 0;
@@ -78,6 +89,14 @@ function newGame() {
     const newGame = document.createElement("button");
     newGame.setAttribute("id", "restart-button");
     newGame.textContent = "Play again?";
+
+    newGame.addEventListener("mouseenter", () => {
+        newGame.style.backgroundColor = "green";
+    });
+    newGame.addEventListener("mouseleave", () => {
+        newGame.style.backgroundColor = "";
+    });
+
     newGame.addEventListener("click", clearGame);
     restart.appendChild(newGame);
 }
