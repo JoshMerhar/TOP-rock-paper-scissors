@@ -1,11 +1,8 @@
 const container = document.querySelector("#container");
 
-let playerScore = 0;
-let computerScore = 0;
-
 const content = document.createElement("div");
 content.classList.add("content");
-content.textContent = "Who will win?";
+content.textContent = "What's your pick?";
 container.appendChild(content);
 
 const humanScore = document.createElement("div");
@@ -17,7 +14,6 @@ const machineScore = document.createElement("div");
 machineScore.classList.add("score");
 machineScore.textContent = "Computer: " + 0;
 container.appendChild(machineScore);
-
 
 const choices = ["rock", "paper", "scissors"];
 
@@ -31,6 +27,8 @@ buttons.forEach(button => button.addEventListener("click", playRound));
 buttons.forEach(button => button.addEventListener("click", showWinner));
 
 let scoreCap = 5;
+let playerScore = 0;
+let computerScore = 0;
 let winner;
 
 function playRound() {
@@ -66,11 +64,33 @@ function showWinner() {
     } else {
         return;
     }
+
+    const gameOver = document.querySelector("#game-over");
     const theWinner = document.createElement("div");
     theWinner.classList.add("winner-message");
     theWinner.textContent = winner;
-    container.appendChild(theWinner);
+    gameOver.appendChild(theWinner);
+    newGame();
 }
 
+function newGame() {
+    const restart = document.querySelector("#new-game");
+    const newGame = document.createElement("button");
+    newGame.setAttribute("id", "restart-button");
+    newGame.textContent = "Play again?";
+    newGame.addEventListener("click", clearGame);
+    restart.appendChild(newGame);
+}
 
-
+function clearGame() {
+    const theWinner = document.querySelector(".winner-message");
+    theWinner.remove();
+    const newGame = document.querySelector("#restart-button")
+    newGame.remove();
+    content.textContent = "What's your pick?";
+    humanScore.textContent = "Player: " + 0;
+    playerScore = 0;
+    machineScore.textContent = "Computer: " + 0;
+    computerScore = 0;
+    winner = "";
+}
